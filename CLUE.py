@@ -21,23 +21,6 @@ weapons = {1: "Caja de Atun",
            4: "Mochila Scout",
            5: "Bolsa de Tamales"}
 
-root = Tk()
-root.title("CLUE - CETI")
-root.resizable(0, 0)
-
-frame = Frame()
-frame.pack()
-frame.config(bg = "white", width = "800", height = "400")
-
-canvas = tk.Canvas(frame, width = 800, height = 400)
-canvas.pack()
-img= tk.PhotoImage(file = "./Resources/Menu.png")
-canvas.background = img
-bg = canvas.create_image(0, 0, anchor = tk.NW, image = img)
-
-ending = random.randint(1, 5)
-print(f"Generated ending: {ending}")
-
 def image_resize(image, width = None, Height = None, inter = cv2.INTER_AREA):
     dim = None
     (h, w) = image.shape[:2]
@@ -59,9 +42,9 @@ def Choice():
     canvas.pack()
     img= tk.PhotoImage(file="./Resources/Choice.png")
     canvas.background = img
-    bg = canvas.create_image(0, 0, anchor = tk.NW, image = img)
+    canvas.create_image(0, 0, anchor = tk.NW, image = img)
 
-    quit_button=tk.Button(frame, text = "Quit", command = Quit)
+    quit_button=tk.Button(frame, text = "Quit", command = lambda : root.destroy())
     quit_button.place(x = 725, y = 340)
     quit_button.config(fg = "white", bg = "red", font = ('helvetica', 15, "bold"))
       
@@ -94,51 +77,66 @@ def Choice():
     
         if character == get_character and place == get_place and weapon == get_weapon:
             print("Game won.")
-            label_c = tk.Label(frame, text = "Game Over! You won.", fg = "green", bg = None, font = ('helvetica', 15, "bold" )).place (x = 150, y = 150) 
+            tk.Label(frame, text = "Game Over! You won.", fg = "green", bg = None, font = ('helvetica', 15, "bold" )).place (x = 150, y = 150) 
            
         else:
             print("Game lost.")
-            label_c = (tk.Label(frame, text = "Game Over! You lost.", fg = "red", bg = "white", font = ('helvetica', 15,"bold" )).place(x = 150, y = 150),
-                       tk.Label(frame, text = f"El culpable fue {characters[ending]}. Robó la gema del infinito en {places[ending]} con su {weapons[ending]}.",
-                                fg = "black", bg = "white", font=('helvetica', 9)).place (x=100, y=180))
+            tk.Label(frame, text = "Game Over! You lost.", fg = "red", bg = "white", font = ('helvetica', 15, "bold" )).place(x = 150, y = 150)
+            tk.Label(frame, text = f"El culpable fue {characters[ending]}. Robó las caguamas en {places[ending]} con su {weapons[ending]}.",
+                                fg = "black", bg = "white", font = ('helvetica', 9)).place(x = 100, y = 180)
             
     b_ver = tk.Button(frame, text = "Verify", command = Verify)
     b_ver.place(x = 725, y = 300)
-    b_ver.config(fg = "white", bg = "blue",font = ('helvetica', 12, "bold"))
+    b_ver.config(fg = "white", bg = "blue", font = ('helvetica', 12, "bold"))
 
     return (character_choice.get(), place_choice.get(), weapon_choice.get())
-        
-def Quit(): root.destroy()
 
 def StoryPlace(place, final):
     cv2.imshow(f"{place}", image_resize(cv2.imread(f"./Resources/{place}{final}.png"), Height = 500))
 
-character, weapon, place = ending, ending, ending
-    
-print(f"El culpable fue {characters[ending]}. Robó las caguamas en {places[ending]} con su {weapons[ending]}.")
+if __name__ == "__main__":
+    root = Tk()
+    root.title("CLUE - CETI")
+    root.resizable(0, 0)
 
-b_wakanda = Button(frame, text = "Ocotlan", command = lambda : StoryPlace("Ocotlan", ending))
-b_wakanda.place(x = 45, y = 330)
-b_wakanda.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+    frame = Frame()
+    frame.pack()
+    frame.config(bg = "white", width = "800", height = "400")
 
-b_xmen = Button(frame, text = "Oblatos", command = lambda : StoryPlace("Oblatos", ending))
-b_xmen.place(x = 200, y = 330)
-b_xmen.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+    canvas = tk.Canvas(frame, width = 800, height = 400)
+    canvas.pack()
+    img= tk.PhotoImage(file = "./Resources/Menu.png")
+    canvas.background = img
+    bg = canvas.create_image(0, 0, anchor = tk.NW, image = img)
 
-b_asgard = Button(frame, text = "Tlajomulco", command = lambda : StoryPlace("Tlajomulco", ending))
-b_asgard.place(x = 350, y = 330)
-b_asgard.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+    ending = random.randint(1, 5)
+    print(f"Generated ending: {ending}")
+    print(f"El culpable fue {characters[ending]}. Robó las caguamas en {places[ending]} con su {weapons[ending]}.")
 
-b_tstark = Button(frame, text = "Arcos de Zapopan", command = lambda : StoryPlace("Arcos", ending))
-b_tstark.place(x = 475, y = 330)
-b_tstark.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+    character, weapon, place = ending, ending, ending
 
-b_shield = Button(frame, text = "Cd. Granja", command = lambda : StoryPlace("Granja", ending))
-b_shield.place(x = 670, y = 330)
-b_shield.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+    ocotlan_bttn = Button(frame, text = "Ocotlan", command = lambda : StoryPlace("Ocotlan", ending))
+    ocotlan_bttn.place(x = 45, y = 330)
+    ocotlan_bttn.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
 
-b_terminar = Button(frame, text = "Continue", command = Choice)
-b_terminar.place(x = 500, y = 150)
-b_terminar.config(fg = "white", bg = "red", font = ('helvetica', 15,"bold" ))
+    oblatos_bttn = Button(frame, text = "Oblatos", command = lambda : StoryPlace("Oblatos", ending))
+    oblatos_bttn.place(x = 200, y = 330)
+    oblatos_bttn.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
 
-root.mainloop()
+    tlajomulco_bttn = Button(frame, text = "Tlajomulco", command = lambda : StoryPlace("Tlajomulco", ending))
+    tlajomulco_bttn.place(x = 350, y = 330)
+    tlajomulco_bttn.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+
+    arcos_bttn = Button(frame, text = "Arcos de Zapopan", command = lambda : StoryPlace("Arcos", ending))
+    arcos_bttn.place(x = 475, y = 330)
+    arcos_bttn.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+
+    granja_bttn = Button(frame, text = "Cd. Granja", command = lambda : StoryPlace("Granja", ending))
+    granja_bttn.place(x = 670, y = 330)
+    granja_bttn.config(fg = "white", bg = "black", font = ('helvetica', 12, "bold"))
+
+    continue_bttn = Button(frame, text = "Continue", command = Choice)
+    continue_bttn.place(x = 500, y = 150)
+    continue_bttn.config(fg = "white", bg = "red", font = ('helvetica', 15,"bold" ))
+
+    root.mainloop()
